@@ -1,4 +1,4 @@
-ARG VARIABLE=
+ARG VARIABLE=0.0.1-SNAPSHOT
 
 # Use an official Maven image as a build stage
 FROM maven:3.8.4-openjdk-17 AS build
@@ -28,7 +28,7 @@ ARG VARIABLE
 WORKDIR /app
 
 # Copy the JAR file from the build stage
-COPY --from=build /app/target/st2dce-$VARIABLE.jar app.jar
+COPY --from=build /app/target/continuum-$VARIABLE.jar app.jar
 
 # Expose the port
 EXPOSE 8080
