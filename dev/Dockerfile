@@ -17,8 +17,11 @@ RUN mvn dependency:go-offline
 # Copy the application code
 COPY src src
 
-# Build the application (generate a jar file with the version from Jenkins build)
-RUN mvn package -Drevision="$JENKINS_BUILD_ID"
+# Set the project version
+RUN mvn versions:set -DnewVersion="$JENKINS_BUILD_ID"
+
+# Build the application (generate the JAR file)
+RUN mvn package
 
 
 # Use a lightweight Java image for the runtime
