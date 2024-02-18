@@ -1,6 +1,5 @@
 pipeline {
   environment {
-    imagename = "aureldp/continuum"
     registryCredential = 'dockerhub_id'
     dockerImage = ''
   }
@@ -15,7 +14,13 @@ pipeline {
       steps{
         script {
           dir('dev') {
-            dockerImage = docker.build imagename + ":$BUILD_NUMBER"
+            def dockerImageName = sh(script: 'mvn help:evaluate -Dexpression=docker.image.name -q -DforceStdout', returnStdout: true).trim()
+            def dockerImageTag = sh(script: 'mvn help:evaluate -Dexpression=docker.image.tag -q -DforceStdout', returnStdout: true).trim()
+            def jenkinsBuildId = env.BUILD_NUMBER
+
+            sh "docker build --build-arg DOCKER_IMAGE_NAME=${dockerImageName} --build-arg JENKINS_BUILD_ID=${jenkinsBuildId} -t aureldp/${dockerImageName}:${dockerImageTag} ."
+
+            dockerImage = docker.image("aureldp/${dockerImageName}:${dockerImageTag}")
           }
         }
       }
@@ -31,7 +36,7 @@ pipeline {
     }
     stage('Remove Unused docker image') {
       steps{
-        sh "docker rmi $imagename:$BUILD_NUMBER"
+        sh "docker rmi ${dockerImage.id}"
       }
     }
   }
