@@ -1,4 +1,7 @@
-ARG VARIABLE=0.0.1-SNAPSHOT
+# Arguments with default values in case they are not provided
+ARG DOCKER_IMAGE_NAME=continuum
+ARG DOCKER_IMAGE_TAG=0.0.1-SNAPSHOT
+ARG JENKINS_BUILD_ID=0.0.1-SNAPSHOT
 
 # Use an official Maven image as a build stage
 FROM maven:3.8.4-openjdk-17 AS build
@@ -15,20 +18,21 @@ RUN mvn dependency:go-offline
 # Copy the application code
 COPY src src
 
-# Build the application
-RUN mvn package
+# Build the application with the version from Jenkins build
+RUN mvn package -Drevision=$JENKINS_BUILD_ID
 
 
 # Use a lightweight Java image for the runtime
 FROM openjdk:17-slim
 
-ARG VARIABLE
+ARG DOCKER_IMAGE_NAME
+ARG DOCKER_IMAGE_TAG
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the JAR file from the build stage
-COPY --from=build /app/target/continuum-$VARIABLE.jar app.jar
+# Copy the JAR file from the build stage (jar version is from Jenkins build)
+COPY --from=build /app/target/$DOCKER_IMAGE_NAME-$JENKINS_BUILD_ID.jar app.jar
 
 # Expose the port
 EXPOSE 8080
