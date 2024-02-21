@@ -53,11 +53,16 @@ pipeline {
           if (status != 0) {
             error("Minikube is not running. Please start Minikube before running this pipeline.")
           }
+
           echo("Deploying to Development environment")
+          def namespace = sh(script: 'kubectl get ns development', returnStatus: true)
+          if (namespace != 0) {
+            sh 'kubectl create ns development'
+          }
           sh """
             sed -i "s,program_name,${dockerImageName}," ops/continuum-dev-deployment.yaml
             sed -i "s,image_name,aureldp/${dockerImageName}:${dockerImageTag}," ops/continuum-dev-deployment.yaml
-            kubectl apply -f ops/continuum-dev-deployment.yaml
+            kubectl apply -f ops/continuum-dev.yaml
           """
         }
       }
