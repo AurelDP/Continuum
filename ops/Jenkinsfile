@@ -2,20 +2,24 @@ pipeline {
   environment {
     registryCredential = 'dockerhub_id'
     dockerImage = ''
+    dockerImageName = ''
+    dockerImageTag = ''
   }
   agent { label 'slave' }
   stages {
     stage('Cloning Git') {
       steps {
+        echo("Cloning Git")
         git([url: 'git@github.com:AurelDP/Continuum.git', branch: 'main', credentialsId: 'github_id'])
       }
     }
     stage('Building image') {
-      steps{
+      steps {
         script {
           dir('dev') {
-            def dockerImageName = sh(script: 'mvn help:evaluate -Dexpression=docker.image.name -q -DforceStdout', returnStdout: true).trim()
-            def dockerImageTag = sh(script: 'mvn help:evaluate -Dexpression=docker.image.tag -q -DforceStdout', returnStdout: true).trim()
+            echo("Building docker image")
+            dockerImageName = sh(script: 'mvn help:evaluate -Dexpression=docker.image.name -q -DforceStdout', returnStdout: true).trim()
+            dockerImageTag = sh(script: 'mvn help:evaluate -Dexpression=docker.image.tag -q -DforceStdout', returnStdout: true).trim()
             def jenkinsBuildId = env.BUILD_NUMBER
 
             sh "docker build --build-arg DOCKER_IMAGE_NAME=${dockerImageName} --build-arg JENKINS_BUILD_ID=${jenkinsBuildId} -t aureldp/${dockerImageName}:${dockerImageTag} ."
@@ -26,8 +30,9 @@ pipeline {
       }
     }
     stage('Deploy Image') {
-      steps{
+      steps {
         script {
+          echo("Deploying docker image")
           docker.withRegistry( '', registryCredential ) {
             dockerImage.push()
           }
@@ -35,8 +40,26 @@ pipeline {
       }
     }
     stage('Remove Unused docker image') {
-      steps{
+      steps {
+        echo("Removing docker image")
         sh "docker rmi ${dockerImage.id}"
+      }
+    }
+    stage('Deploy to Development') {
+      steps {
+        script {
+          echo("Checking Minikube status")
+          def status = sh(script: 'minikube status', returnStatus: true)
+          if (status != 0) {
+            error("Minikube is not running. Please start Minikube before running this pipeline.")
+          }
+          echo("Deploying to Development environment")
+          sh """
+            sed -i "s,program_name,${dockerImageName}," ops/continuum-dev-deployment.yaml
+            sed -i "s,image_name,aureldp/${dockerImageName}:${dockerImageTag}," ops/continuum-dev-deployment.yaml
+            kubectl apply -f ops/continuum-dev-deployment.yaml
+          """
+        }
       }
     }
   }
