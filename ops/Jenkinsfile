@@ -60,9 +60,49 @@ pipeline {
             sh 'kubectl create ns development'
           }
           sh """
-            sed -i "s,program_name,${dockerImageName}," ops/continuum-dev-deployment.yaml
-            sed -i "s,image_name,aureldp/${dockerImageName}:${dockerImageTag}," ops/continuum-dev-deployment.yaml
+            sed -i "s,program_name,${dockerImageName}," ops/continuum-dev.yaml
+            sed -i "s,image_name,aureldp/${dockerImageName}:${dockerImageTag}," ops/continuum-dev.yaml
             kubectl apply -f ops/continuum-dev.yaml
+          """
+
+          echo("Exposing the service to the outside world with port-forward")
+          sh """
+            kubectl port-forward svc/${dockerImageName}-service 8080:8081 -n development &
+            sleep 10
+          """
+        }
+      }
+    }
+    stage('Test Deployment') {
+      steps {
+        script {
+          echo("Testing deployment")
+            def status = sh(script: 'curl -w "%{http_code}" localhost:8081', returnStatus: true)
+            if (status != 0) {
+              error("Curl command failed with status code: ${status}")
+            }
+          }
+        }
+      }
+    }
+    stage('Deploy to Production') {
+      steps {
+        script {
+          echo("Deploying to Production environment")
+          def namespace = sh(script: 'kubectl get ns production', returnStatus: true)
+          if (namespace != 0) {
+            sh 'kubectl create ns production'
+          }
+          sh """
+            sed -i "s,program_name,${dockerImageName}," ops/continuum-prod.yaml
+            sed -i "s,image_name,aureldp/${dockerImageName}:${dockerImageTag}," ops/continuum-prod.yaml
+            kubectl apply -f ops/continuum-prod.yaml
+          """
+
+          echo("Exposing the service to the outside world with port-forward")
+          sh """
+            kubectl port-forward svc/${dockerImageName}-service 8080:8082 -n production &
+            sleep 10
           """
         }
       }
