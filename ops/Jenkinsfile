@@ -77,10 +77,9 @@ pipeline {
       steps {
         script {
           echo("Testing deployment")
-            def status = sh(script: 'curl -w "%{http_code}" localhost:8081', returnStatus: true)
-            if (status != 0) {
-              error("Curl command failed with status code: ${status}")
-            }
+          def status = sh(script: 'curl -w "%{http_code}" localhost:8081', returnStatus: true)
+          if (status != 0) {
+            error("Curl command failed with status code: ${status}")
           }
         }
       }
