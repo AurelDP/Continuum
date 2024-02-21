@@ -65,6 +65,13 @@ pipeline {
             kubectl apply -f ops/continuum-dev.yaml
           """
 
+          echo("Waiting for the pod to be running")
+          def podStatus = sh(script: "kubectl get pods -n development -l app=${dockerImageName}-service -o jsonpath='{.items[0].status.phase}'", returnStdout: true).trim()
+          while (podStatus != 'Running') {
+            sleep 10
+            podStatus = sh(script: "kubectl get pods -n development -l app=${dockerImageName}-service -o jsonpath='{.items[0].status.phase}'", returnStdout: true).trim()
+          }
+
           echo("Exposing the service to the outside world with port-forward")
           sh """
             kubectl port-forward svc/${dockerImageName}-service 8080:8081 -n development &
@@ -97,6 +104,13 @@ pipeline {
             sed -i "s,image_name,aureldp/${dockerImageName}:${dockerImageTag}," ops/continuum-prod.yaml
             kubectl apply -f ops/continuum-prod.yaml
           """
+
+          echo("Waiting for the pod to be running")
+          def podStatus = sh(script: "kubectl get pods -n production -l app=${dockerImageName} -o jsonpath='{.items[0].status.phase}'", returnStdout: true).trim()
+          while (podStatus != 'Running') {
+            sleep 10
+            podStatus = sh(script: "kubectl get pods -n production -l app=${dockerImageName} -o jsonpath='{.items[0].status.phase}'", returnStdout: true).trim()
+          }
 
           echo("Exposing the service to the outside world with port-forward")
           sh """
