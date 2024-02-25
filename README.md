@@ -32,7 +32,7 @@ Un volume a déjà été créé, avec toute la configuration nécessaire pour le
 
 Pour récupérer le volume Docker :
 - Installer l'extension `Volumes Backup & Share` dans Docker Desktop
-- Importer le volume `continuum_jenkins_volume` depuis le registre Docker Hub `docker.io/aureldp/continuum_jenkins_volume:latest`
+- Depuis l'extension, importer le volume `continuum_jenkins_volume` depuis le registre Docker Hub `docker.io/aureldp/continuum_jenkins_volume:latest`
 
 Pour lancer Jenkins avec le volume Docker, lancer l'image jenkins avec la commande suivante :
 ```bash
