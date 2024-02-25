@@ -39,7 +39,7 @@ Pour lancer Jenkins avec le volume Docker, lancer l'image jenkins avec la comman
 docker run -d -p 8080:8080 -p 50000:50000 --name continuum_jenkins --mount source=continuum_jenkins_volume,target=/var/jenkins_home docker.io/jenkins/jenkins:lts
 ```
 
-Les informations de connexion pour Jenkins peuvent être trouvées dans le rapport associé au projet.
+Les informations de connexion pour Jenkins peuvent être trouvées dans le rapport associé au projet. \
 IMPORTANT: Il faudra modifier le chemin du workspace du nœud associé au pipeline
 
 ### Configuration manuelle de Jenkins
