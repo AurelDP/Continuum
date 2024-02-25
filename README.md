@@ -50,7 +50,7 @@ Vérifier que Jenkins est déjà configuré sur votre machine.
 #### Configuration générale
 
 1. Créer un nœud Jenkins avec Docker et Maven installés (labelliser ce nœud `slave`)
-2. Vérifier que les plugins Kubernetes, Docker et Git sont installés
+2. Vérifier que les plugins Kubernetes, Kubernetes CLI, Docker et Git sont installés
 3. Configurer un credential (nom d'utilisateur et mot de passe) Docker `dockerhub_id` pour se connecter à Docker Hub
 4. Configurer un credential (SSH username with private key) Github `github_id` pour se connecter à Github
 
