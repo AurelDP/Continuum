@@ -40,7 +40,7 @@ docker run -d -p 8080:8080 -p 50000:50000 --name continuum_jenkins --mount sourc
 ```
 
 Les informations de connexion pour Jenkins peuvent être trouvées dans le rapport associé au projet. \
-IMPORTANT: Il faudra modifier le chemin du workspace du nœud associé au pipeline
+IMPORTANT: Il faudra modifier le chemin du workspace (répertoire de travail) du nœud `slave` associé au pipeline
 
 ### Configuration manuelle de Jenkins
 
