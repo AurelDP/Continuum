@@ -18,7 +18,7 @@ Continuum est une application Java développée avec Spring Boot et Maven.
 - Java 17 ou supérieur
 - Maven 3.6.0 ou supérieur
 - Docker
-- Jenkins
+- Jenkins 2.444 ou supérieur
 - Minikube
 
 ## Déploiement avec Jenkins
@@ -36,7 +36,7 @@ Pour récupérer le volume Docker :
 
 Pour lancer Jenkins avec le volume Docker, lancer l'image jenkins avec la commande suivante :
 ```bash
-docker run -d -p 8080:8080 -p 50000:50000 --name continuum_jenkins --mount source=continuum_jenkins_volume,target=/var/jenkins_home docker.io/jenkins/jenkins:lts
+docker run -d -p 8080:8080 -p 50000:50000 --name continuum_jenkins --mount source=continuum_jenkins_volume,target=/var/jenkins_home docker.io/jenkins/jenkins:2.444
 ```
 
 Les informations de connexion pour Jenkins peuvent être trouvées dans le rapport associé au projet. \
