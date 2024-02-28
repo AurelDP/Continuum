@@ -109,10 +109,6 @@ pipeline {
             sleep 10
             podStatus = sh(script: "kubectl get pods -n production -l app=${dockerImageName} -o jsonpath='{.items[0].status.phase}'", returnStdout: true).trim()
           }
-
-          echo("Exposing the service to the outside world with port-forward")
-          sh(script: "kubectl port-forward svc/${dockerImageName}-service 8082:8082 -n production &", returnStatus: true)
-          sh "sleep 10"
         }
       }
     }
