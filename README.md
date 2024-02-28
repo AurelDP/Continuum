@@ -11,7 +11,11 @@ Continuum is a Java application developed with Spring Boot and Maven.
     - [General configuration](#general-configuration)
     - [Pipeline configuration](#pipeline-configuration)
   - [Pipeline launch](#pipeline-launch)
-  - [Additional information](#additional-information)
+- [Monitor the application with Prometheus and Grafana](#monitor-the-application-with-prometheus-and-grafana)
+  - [Installing Prometheus and Grafana](#installing-prometheus-and-grafana)
+  - [Accessing Prometheus and Grafana](#accessing-prometheus-and-grafana)
+  - [Configuration of Grafana](#configuration-of-grafana)
+- [Additional information](#additional-information)
 
 ## Prerequisites
 
@@ -20,7 +24,7 @@ Continuum is a Java application developed with Spring Boot and Maven.
 - **Docker**
 - **Jenkins 2.444** or higher
 - **Minikube**
-- **Helm** (for **Prometheus** and **Grafana**)
+- **Helm**
 
 > [!IMPORTANT]
 > Make sure that you can execute `sh` commands in your terminal as Jenkinsfile uses shell commands. \
@@ -46,12 +50,12 @@ To start Jenkins with the Docker volume, run the Jenkins image with the followin
 docker run -d -p 8080:8080 -p 50000:50000 --name continuum_jenkins --mount source=continuum_jenkins_volume,target=/var/jenkins_home docker.io/jenkins/jenkins:2.444
 ```
 > [!IMPORTANT]
-> Make sure to use a version of **Jenkins** equal to or greater than **2.444**
+> Make sure to use a version of **Jenkins** equal to or greater than **2.444**.
 
 The connection information for Jenkins can be found in the report associated with the project.
 
 > [!NOTE]
-> The workspace path of the `slave` node associated with the pipeline will need to be modified in the **Jenkins node configuration**
+> The workspace path of the `slave` node associated with the pipeline will need to be modified in the **Jenkins node configuration**.
 
 ### Manual Jenkins configuration
 
@@ -87,6 +91,42 @@ After configuring Jenkins, it is possible to launch the `ContinuumDeploymentPipe
         kubectl port-forward svc/continuum-service 8082:8082 -n production
         ```
    - It is also possible to use the command `minikube tunnel` to expose the service outside the Kubernetes cluster without having to forward the port
+
+## Monitor the application with Prometheus and Grafana
+
+To monitor the application, **Prometheus** and **Grafana** are used. \
+
+### Installing Prometheus and Grafana
+
+**Prometheus** and **Grafana** are installed with **Helm**. \
+Run the script `install_monitoring.sh` to install **Prometheus** and **Grafana** on the Kubernetes cluster.
+```bash
+sh ops/install_monitoring.sh
+```
+
+> [!NOTE]
+> **Helm** must be installed on your machine to run the script and **Minikube** must be started.
+
+### Accessing Prometheus and Grafana
+
+Run the script `launch_monitoring.sh` to access **Prometheus** and **Grafana**:
+```bash
+sh ops/launch_monitoring.sh
+```
+
+> [!NOTE]
+> Port forwarding is done automatically with the script, please do not close the terminal while using the monitoring tools.
+
+### Configuration of Grafana
+
+1. Access **Grafana** at http://localhost:3000
+2. Log in with the following credentials:
+    - **Username**: admin
+    - **Password**: password given by the launching script
+3. Add a **datasource** with the following information:
+   - **Name**: prometheus
+   - **Type**: Prometheus
+   - **Connection URL**: http://host.docker.internal:9090
 
 ## Additional information
 
