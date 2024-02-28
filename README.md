@@ -50,7 +50,7 @@ docker run -d -p 8080:8080 -p 50000:50000 --name continuum_jenkins --mount sourc
 
 The connection information for Jenkins can be found in the report associated with the project.
 
-> [!INFO]
+> [!NOTE]
 > The workspace path of the `slave` node associated with the pipeline will need to be modified in the **Jenkins node configuration**
 
 ### Manual Jenkins configuration
