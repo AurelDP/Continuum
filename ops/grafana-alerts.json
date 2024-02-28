@@ -4,8 +4,8 @@
     {
       "orgId": 1,
       "name": "Replicas checker",
-      "folder": "Alerts",
-      "interval": "5m",
+      "folder": "Continuum",
+      "interval": "30s",
       "rules": [
         {
           "uid": "af56e81d-a2e5-4436-a386-a735e7b3add5",
@@ -75,7 +75,7 @@
           ],
           "noDataState": "NoData",
           "execErrState": "Error",
-          "for": "5m",
+          "for": "30s",
           "annotations": {},
           "labels": {},
           "isPaused": false
@@ -148,7 +148,7 @@
           ],
           "noDataState": "NoData",
           "execErrState": "Error",
-          "for": "5m",
+          "for": "30s",
           "annotations": {},
           "labels": {},
           "isPaused": false
