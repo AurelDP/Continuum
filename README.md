@@ -22,7 +22,8 @@ Continuum is a Java application developed with Spring Boot and Maven.
 - **Minikube**
 - **Helm** (for **Prometheus** and **Grafana**)
 
-> **IMPORTANT:** Make sure that you can execute `sh` commands in your terminal as Jenkinsfile uses shell commands. \
+> [!IMPORTANT]
+> Make sure that you can execute `sh` commands in your terminal as Jenkinsfile uses shell commands. \
 > To enable it with git on **Windows**, please **replace the path** `C:\Program Files\Git\bin` with `C:\Program Files\Git\usr\bin` (or equivalent if git is installed to another location)
 > in the system environment variable `Path` and **restart your terminal** (or the node's terminal for **Jenkins**).
 
@@ -44,11 +45,13 @@ To start Jenkins with the Docker volume, run the Jenkins image with the followin
 ```bash
 docker run -d -p 8080:8080 -p 50000:50000 --name continuum_jenkins --mount source=continuum_jenkins_volume,target=/var/jenkins_home docker.io/jenkins/jenkins:2.444
 ```
-> **IMPORTANT:** Make sure to use a version of **Jenkins** equal to or greater than **2.444**
+> [!IMPORTANT]
+> Make sure to use a version of **Jenkins** equal to or greater than **2.444**
 
 The connection information for Jenkins can be found in the report associated with the project.
 
-> **IMPORTANT:** The workspace path of the `slave` node associated with the pipeline will need to be modified in the **Jenkins node configuration**
+> [!INFO]
+> The workspace path of the `slave` node associated with the pipeline will need to be modified in the **Jenkins node configuration**
 
 ### Manual Jenkins configuration
 
