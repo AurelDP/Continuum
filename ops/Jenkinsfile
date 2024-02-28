@@ -10,7 +10,7 @@ pipeline {
     stage('Cloning Git') {
       steps {
         echo("Cloning Git")
-        git([url: 'git@github.com:AurelDP/Continuum.git', branch: 'main'])
+        git branch: 'main', url: 'https://github.com/AurelDP/Continuum.git'
       }
     }
     stage('Building image') {
