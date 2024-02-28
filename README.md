@@ -72,7 +72,7 @@ Make sure Jenkins is **already configured** on your machine.
 #### Pipeline configuration
 
 1. Create a new pipeline `ContinuumDeploymentPipeline` in Jenkins
-2. Configure the pipeline with the content of the Jenkinsfile
+2. Configure the pipeline with the content of the [Jenkinsfile](https://github.com/AurelDP/Continuum/blob/main/ops/Jenkinsfile)
 3. Start the Jenkins node `slave` to run the pipeline
 
 ### Pipeline launch
@@ -99,7 +99,7 @@ To monitor the application, **Prometheus** and **Grafana** are used.
 ### Installing Prometheus and Grafana
 
 **Prometheus** and **Grafana** are installed with **Helm**. \
-Run the script `install_monitoring.sh` to install **Prometheus** and **Grafana** on the Kubernetes cluster.
+Run the script [install_monitoring.sh](https://github.com/AurelDP/Continuum/blob/main/ops/install_monitoring.sh) to install **Prometheus** and **Grafana** on the Kubernetes cluster.
 ```bash
 sh ops/install_monitoring.sh
 ```
@@ -109,7 +109,7 @@ sh ops/install_monitoring.sh
 
 ### Accessing Prometheus and Grafana
 
-Run the script `launch_monitoring.sh` to access **Prometheus** and **Grafana**:
+Run the script [launch_monitoring.sh](https://github.com/AurelDP/Continuum/blob/main/ops/launch_monitoring.sh) to access **Prometheus** and **Grafana**:
 ```bash
 sh ops/launch_monitoring.sh
 ```
@@ -127,6 +127,7 @@ sh ops/launch_monitoring.sh
    - **Name**: prometheus
    - **Type**: Prometheus
    - **Connection URL**: http://host.docker.internal:9090
+4. Import the **dashboard** from the file [grafana-dashboard.json](https://github.com/AurelDP/Continuum/blob/main/ops/grafana-dashboard.json) to visualize the metrics of the application
 
 ## Additional information
 
