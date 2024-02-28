@@ -11,3 +11,6 @@ helm repo add grafana https://grafana.github.io/helm-charts
 
 # Install Grafana
 helm install grafana grafana/grafana
+
+# Upgrade Grafana install with value.yaml file
+helm upgrade grafana grafana/grafana -f grafana/values.yml

@@ -127,19 +127,19 @@ sh ops/launch_monitoring.sh
 > [!NOTE]
 > Port forwarding is done automatically with the script, please do not close the terminal while using the monitoring tools.
 
-### Configuration of Grafana
+### Using Grafana
 
 1. Access **Grafana** at http://localhost:3000
 2. Log in with the following credentials:
     - **Username**: admin
     - **Password**: password given by the launching script
-3. Add a **datasource** with the following information:
-    - **Name**: prometheus
+3. Datasource to Prometheus is already configured with the installation script. If not, add a new datasource with the following information:
+    - **Name**: Prometheus
     - **Type**: Prometheus
     - **Connection URL**: http://host.docker.internal:9090
-4. Import the **dashboard** from the file [grafana-dashboard.json](https://github.com/AurelDP/Continuum/blob/main/ops/grafana-dashboard.json) to
-   visualize the metrics of the application
-5. Import the **replicas alert** from the file [grafana-alerts.json](https://github.com/AurelDP/Continuum/blob/main/ops/grafana-alerts.json) to be
+4. Dashboard is already imported with the installation script. If not, import the **dashboard** from the
+   file [dashboard.json](https://github.com/AurelDP/Continuum/blob/main/ops/grafana/dashboard.json)
+5. Import the **replicas alert** from the file [alerts.json](https://github.com/AurelDP/Continuum/blob/main/ops/grafana/alerts.json) to be
    notified when the number of replicas is less than 2 for each environment
 
 ## Additional information

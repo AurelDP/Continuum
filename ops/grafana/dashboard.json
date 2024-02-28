@@ -88,10 +88,7 @@
       "pluginVersion": "10.3.3",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "b9bdaf65-9cdb-45f5-a673-e37969374a40"
-          },
+          "datasource": "Prometheus",
           "editorMode": "code",
           "expr": "sum(kube_deployment_status_replicas_available{namespace=~\"development\"}) by (deployment)",
           "instant": false,
@@ -210,10 +207,7 @@
       "pluginVersion": "10.3.3",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "b9bdaf65-9cdb-45f5-a673-e37969374a40"
-          },
+          "datasource": "Prometheus",
           "editorMode": "code",
           "expr": "sum(kube_deployment_status_replicas_available{namespace=~\"development\"}) by (deployment)",
           "instant": false,
@@ -291,10 +285,7 @@
       "pluginVersion": "10.3.3",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "b9bdaf65-9cdb-45f5-a673-e37969374a40"
-          },
+          "datasource": "Prometheus",
           "editorMode": "code",
           "expr": "sum(kube_deployment_status_replicas_available{namespace=~\"production\"}) by (deployment)",
           "instant": false,
@@ -307,10 +298,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "b9bdaf65-9cdb-45f5-a673-e37969374a40"
-      },
+      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -388,10 +376,7 @@
       "pluginVersion": "10.3.3",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "b9bdaf65-9cdb-45f5-a673-e37969374a40"
-          },
+          "datasource": "Prometheus",
           "editorMode": "code",
           "expr": "sum(kube_deployment_status_replicas_available{namespace=~\"production\"}) by (deployment)",
           "instant": false,
