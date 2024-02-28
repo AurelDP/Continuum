@@ -81,7 +81,7 @@ After configuring Jenkins, it is possible to launch the `ContinuumDeploymentPipe
     ```bash
     kubectl get all -n production
     ```
-4. Check that the **application is accessible** at `http://localhost:8082` (port in production mode)
+4. Check that the **application is accessible** at http://localhost:8082 (port in production mode)
    - **Port forwarding** can be done with the command:
         ```bash
         kubectl port-forward svc/continuum-service 8082:8082 -n production
