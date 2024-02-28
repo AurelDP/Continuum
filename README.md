@@ -1,79 +1,91 @@
 # Continuum
 
-Continuum est une application Java développée avec Spring Boot et Maven.
+Continuum is a Java application developed with Spring Boot and Maven.
 
 ## Sommaire
 
-- [Prérequis](#prérequis)
-- [Déploiement avec Jenkins](#déploiement-avec-jenkins)
-  - [Configuration automatique de Jenkins](#configuration-automatique-de-jenkins)
-  - [Configuration manuelle de Jenkins](#configuration-manuelle-de-jenkins)
-    - [Configuration générale](#configuration-générale)
-    - [Configuration du pipeline](#configuration-du-pipeline)
-  - [Lancement du pipeline](#lancement-du-pipeline)
-  - [Informations supplémentaires](#informations-supplémentaires)
+- [Prerequisites](#prerequisites)
+- [Deployment with Jenkins](#deployment-with-jenkins)
+  - [Automatic Jenkins configuration](#automatic-jenkins-configuration)
+  - [Manual Jenkins configuration](#manual-jenkins-configuration)
+    - [General configuration](#general-configuration)
+    - [Pipeline configuration](#pipeline-configuration)
+  - [Pipeline launch](#pipeline-launch)
+  - [Additional information](#additional-information)
 
-## Prérequis
+## Prerequisites
 
-- Java 17 ou supérieur
-- Maven 3.6.0 ou supérieur
-- Docker
-- Jenkins 2.444 ou supérieur
-- Minikube
-- Helm with Prometheus and Grafana
+- **Java 17** or higher
+- **Maven 3.6.0** or higher
+- **Docker**
+- **Jenkins 2.444** or higher
+- **Minikube**
+- **Helm** (for **Prometheus** and **Grafana**)
 
-## Déploiement avec Jenkins
+> **IMPORTANT:** Make sure that you can execute `sh` commands in your terminal as Jenkinsfile uses shell commands. \
+> To enable it with git on **Windows**, please **replace the path** `C:\Program Files\Git\bin` with `C:\Program Files\Git\usr\bin` (or equivalent if git is installed to another location)
+> in the system environment variable `Path` and **restart your terminal** (or the node's terminal for **Jenkins**).
 
-Le déploiement est géré par Jenkins via un pipeline défini dans le Jenkinsfile. Le déploiement est effectué sur un cluster Kubernetes.
+## Deployment with Jenkins
 
-### Configuration automatique de Jenkins
+The deployment is managed by **Jenkins** via a pipeline defined in the Jenkinsfile. The deployment is done on a **Kubernetes cluster**. \
+To configure **Jenkins**, you can choose the **automatic configuration** with a **Docker volume** or the **manual configuration**.
 
-Un volume Docker est utilisé pour stocker les données de Jenkins. \
-Un volume a déjà été créé, avec toute la configuration nécessaire pour le bon fonctionnement du pipeline.
+### Automatic Jenkins configuration
 
-Pour récupérer le volume Docker :
-- Installer l'extension `Volumes Backup & Share` dans Docker Desktop
-- Depuis l'extension, importer le volume `continuum_jenkins_volume` depuis le registre Docker Hub `docker.io/aureldp/continuum_jenkins_volume:latest`
+A Docker volume is used to store Jenkins data. \
+A volume has already been created, with all the necessary configuration for the pipeline to work properly.
 
-Pour lancer Jenkins avec le volume Docker, lancer l'image jenkins avec la commande suivante :
+To retrieve the Docker volume:
+- Install the `Volumes Backup & Share` extension in **Docker Desktop**
+- From the extension, import the volume from the **Docker Hub registry** `docker.io/aureldp/continuum_jenkins_volume:latest` and name it `continuum_jenkins_volume`
+
+To start Jenkins with the Docker volume, run the Jenkins image with the following command:
 ```bash
 docker run -d -p 8080:8080 -p 50000:50000 --name continuum_jenkins --mount source=continuum_jenkins_volume,target=/var/jenkins_home docker.io/jenkins/jenkins:2.444
 ```
+> **IMPORTANT:** Make sure to use a version of **Jenkins** equal to or greater than **2.444**
 
-Les informations de connexion pour Jenkins peuvent être trouvées dans le rapport associé au projet. \
-IMPORTANT: Il faudra modifier le chemin du workspace (répertoire de travail) du nœud `slave` associé au pipeline
+The connection information for Jenkins can be found in the report associated with the project.
 
-### Configuration manuelle de Jenkins
+> **IMPORTANT:** The workspace path of the `slave` node associated with the pipeline will need to be modified in the **Jenkins node configuration**
 
-Dans le cas où le volume Docker associé au projet n'est pas disponible, il est possible de configurer manuellement Jenkins pour exécuter le pipeline. \
-Vérifier que Jenkins est déjà configuré sur votre machine.
+### Manual Jenkins configuration
 
-#### Configuration générale
+In the case where the Docker volume associated with the project is not available or not working, it is possible to **manually configure Jenkins** to run the pipeline. \
+Make sure Jenkins is **already configured** on your machine.
 
-1. Créer un nœud Jenkins avec Docker et Maven installés (labelliser ce nœud `slave`)
-2. Vérifier que les plugins Kubernetes, Kubernetes CLI, Docker, Git et Prometheus sont installés
-3. Configurer un credential (nom d'utilisateur et mot de passe) Docker `dockerhub_id` pour se connecter à Docker Hub
-4. Configurer un credential (SSH username with private key) Github `github_id` pour se connecter à Github
+#### General configuration
 
-#### Configuration du pipeline
+1. Create a Jenkins node with Docker and Maven installed (**label this node** `slave`)
+    - If the workspace of the node is on your local machine, **Docker** and **Maven** must be installed on it
+2. Make sure that the **Kubernetes**, **Kubernetes CLI**, **Docker**, **Docker Pipeline**, **Git** and **Prometheus** plugins are installed
+3. Configure a **Docker credential** (username and password) `dockerhub_id` to connect to Docker Hub
 
-1. Créer un nouveau pipeline `ContinuumDeploymentPipeline` dans Jenkins
-2. Configurer le pipeline avec le contenu du Jenkinsfile
-3. Lancer le nœud Jenkins `slave` pour exécuter le pipeline
+#### Pipeline configuration
 
-### Lancement du pipeline
+1. Create a new pipeline `ContinuumDeploymentPipeline` in Jenkins
+2. Configure the pipeline with the content of the Jenkinsfile
+3. Start the Jenkins node `slave` to run the pipeline
 
-Après avoir configuré Jenkins, il est possible de lancer le pipeline `ContinuumDeploymentPipeline` pour déployer l'application sur un cluster Kubernetes.
+### Pipeline launch
 
-1. Lancer minikube avec la commande `minikube start` pour démarrer le cluster Kubernetes
-2. Lancer le pipeline `ContinuumDeploymentPipeline` dans Jenkins
-3. Vérifier que le déploiement a été effectué avec succès avec la commande `kubectl get all -n production`
-4. Vérifier que l'application est accessible à l'adresse `http://localhost:8082` (port correspondant à l'application en mode production)
-   - Le pipeline Jenkins effectue déjà une redirection de port automatique, mais elle s'arrête à la fin du pipeline
-   - La redirection de port peut être effectuée avec la commande `kubectl port-forward svc/continuum-service 8082:8082 -n production`
-   - Il est également possible d'utiliser la commande `minikube tunnel` pour exposer le service à l'extérieur du cluster Kubernetes sans avoir à rediriger le port
+After configuring Jenkins, it is possible to launch the `ContinuumDeploymentPipeline` pipeline to deploy the application on a **Kubernetes cluster**.
 
-## Informations supplémentaires
+1. **Start minikube** with the command `minikube start`
+2. Run the `ContinuumDeploymentPipeline` pipeline in Jenkins
+3. Check that the deployment was successful with the command:
+    ```bash
+    kubectl get all -n production
+    ```
+4. Check that the **application is accessible** at `http://localhost:8082` (port in production mode)
+   - **Port forwarding** can be done with the command:
+        ```bash
+        kubectl port-forward svc/continuum-service 8082:8082 -n production
+        ```
+   - It is also possible to use the command `minikube tunnel` to expose the service outside the Kubernetes cluster without having to forward the port
 
-- L'application est accessible au port 8081 en mode développement et au port 8082 en mode production
-- Les informations de connexion Github et Docker Hub sont disponibles dans le rapport associé au projet
+## Additional information
+
+- The application is accessible at port **8081** in development mode and at port **8082** in production mode
+- The connection information for **Docker Hub** can be found in the report associated with the project
