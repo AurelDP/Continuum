@@ -1,10 +1,20 @@
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://host.docker.internal:9090
+        isDefault: true
+        access: proxy
+
 dashboardProviders:
   dashboardproviders.yaml:
     apiVersion: 1
     providers:
       - name: 'default'
         orgId: 1
-        folder: ''
+        folder: Continuum
         type: file
         disableDeletion: false
         editable: true
@@ -415,12 +425,120 @@ dashboards:
           "weekStart": ""
         }
 
-datasources:
-  datasources.yaml:
+alerting:
+  rules.yaml:
     apiVersion: 1
-    datasources:
-      - name: Prometheus
-        type: prometheus
-        url: http://host.docker.internal:9090
-        isDefault: true
-        access: proxy
+    groups:
+      - orgId: 1
+        name: Replicas checker
+        folder: Continuum
+        interval: 30s
+        rules:
+          - uid: afa74065-eb72-4909-9f11-805b4cfffeb5
+            title: Replicas alert - Production
+            condition: Replica threshold
+            data:
+              - refId: Replica metric
+                relativeTimeRange:
+                  from: 600
+                  to: 0
+                datasourceUid: PBFA97CFB590B2093
+                model:
+                  editorMode: code
+                  expr: sum(kube_deployment_status_replicas_available{namespace=~"production"}) by (deployment)
+                  instant: true
+                  intervalMs: 1000
+                  legendFormat: __auto
+                  maxDataPoints: 43200
+                  range: false
+                  refId: Replica metric
+              - refId: Replica threshold
+                relativeTimeRange:
+                  from: 600
+                  to: 0
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                    - evaluator:
+                        params:
+                          - 2
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                          - C
+                      reducer:
+                        params: [ ]
+                        type: last
+                      type: query
+                  datasource:
+                    type: __expr__
+                    uid: __expr__
+                  expression: Replica metric
+                  intervalMs: 1000
+                  maxDataPoints: 43200
+                  refId: Replica threshold
+                  type: threshold
+            noDataState: NoData
+            execErrState: Error
+            for: 30s
+            annotations:
+              description: "Replicas for production environment are below the threshold"
+              summary: "Wrong replicas number, possible issue"
+            labels: { }
+            isPaused: false
+          - uid: bb43cc6b-27bf-43e2-8023-951a170b9919
+            title: Replicas alert - Development
+            condition: Replica threshold
+            data:
+              - refId: Replica metric
+                relativeTimeRange:
+                  from: 600
+                  to: 0
+                datasourceUid: PBFA97CFB590B2093
+                model:
+                  editorMode: code
+                  expr: sum(kube_deployment_status_replicas_available{namespace=~"development"}) by (deployment)
+                  instant: true
+                  intervalMs: 1000
+                  legendFormat: __auto
+                  maxDataPoints: 43200
+                  range: false
+                  refId: Replica metric
+              - refId: Replica threshold
+                relativeTimeRange:
+                  from: 600
+                  to: 0
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                    - evaluator:
+                        params:
+                          - 2
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                          - C
+                      reducer:
+                        params: [ ]
+                        type: last
+                      type: query
+                  datasource:
+                    type: __expr__
+                    uid: __expr__
+                  expression: Replica metric
+                  intervalMs: 1000
+                  maxDataPoints: 43200
+                  refId: Replica threshold
+                  type: threshold
+            noDataState: NoData
+            execErrState: Error
+            for: 30s
+            annotations:
+              description: "Replicas for development environment are below the threshold"
+              summary: "Wrong replicas number, possible issue"
+            labels: { }
+            isPaused: false

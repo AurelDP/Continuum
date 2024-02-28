@@ -14,7 +14,7 @@ Continuum is a Java application developed with Spring Boot and Maven.
 - [Monitor the application with Prometheus and Grafana](#monitor-the-application-with-prometheus-and-grafana)
     - [Installing Prometheus and Grafana](#installing-prometheus-and-grafana)
     - [Accessing Prometheus and Grafana](#accessing-prometheus-and-grafana)
-    - [Configuration of Grafana](#configuration-of-grafana)
+    - [Using Grafana](#using-grafana)
 - [Additional information](#additional-information)
 
 ## Prerequisites
@@ -139,8 +139,7 @@ sh ops/launch_monitoring.sh
     - **Connection URL**: http://host.docker.internal:9090
 4. Dashboard is already imported with the installation script. If not, import the **dashboard** from the
    file [dashboard.json](https://github.com/AurelDP/Continuum/blob/main/ops/grafana/dashboard.json)
-5. Import the **replicas alert** from the file [alerts.json](https://github.com/AurelDP/Continuum/blob/main/ops/grafana/alerts.json) to be
-   notified when the number of replicas is less than 2 for each environment
+5. Alerts are already imported with the installation script.
 
 ## Additional information
 
