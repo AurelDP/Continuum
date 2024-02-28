@@ -94,7 +94,7 @@ After configuring Jenkins, it is possible to launch the `ContinuumDeploymentPipe
 
 ## Monitor the application with Prometheus and Grafana
 
-To monitor the application, **Prometheus** and **Grafana** are used. \
+To monitor the application, **Prometheus** and **Grafana** are used.
 
 ### Installing Prometheus and Grafana
 
