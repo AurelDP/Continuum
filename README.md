@@ -4,7 +4,7 @@ Continuum is a Java application developed with Spring Boot and Maven.
 
 ---
 
-## Sommaire
+## Summary
 
 - [Prerequisites](#prerequisites)
 - [Deployment with Jenkins](#deployment-with-jenkins)
