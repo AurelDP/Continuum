@@ -111,8 +111,8 @@ To monitor the application, **Prometheus** and **Grafana** are used.
 ### Installing Prometheus and Grafana
 
 **Prometheus** and **Grafana** are installed with **Helm**. \
-Run the script [install-monitoring.sh](https://github.com/AurelDP/Continuum/blob/main/ops/install-monitoring.sh) to install **Prometheus** and *
-*Grafana** on the Kubernetes cluster.
+Run the script [install-monitoring.sh](https://github.com/AurelDP/Continuum/blob/main/ops/install-monitoring.sh) to install **Prometheus** and 
+**Grafana** on the Kubernetes cluster.
 
 ```bash
 sh ops/install_monitoring.sh
@@ -123,8 +123,8 @@ sh ops/install_monitoring.sh
 
 ### Accessing Prometheus and Grafana
 
-Run the script [launch-monitoring.sh](https://github.com/AurelDP/Continuum/blob/main/ops/launch-monitoring.sh) to access **Prometheus** and **Grafana
-**:
+Run the script [launch-monitoring.sh](https://github.com/AurelDP/Continuum/blob/main/ops/launch-monitoring.sh) to access **Prometheus** and 
+**Grafana**:
 
 ```bash
 sh ops/launch_monitoring.sh
