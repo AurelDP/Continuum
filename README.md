@@ -2,6 +2,8 @@
 
 Continuum is a Java application developed with Spring Boot and Maven.
 
+---
+
 ## Sommaire
 
 - [Prerequisites](#prerequisites)
@@ -31,6 +33,8 @@ Continuum is a Java application developed with Spring Boot and Maven.
 > To enable it with git on **Windows**, please **replace the path** `C:\Program Files\Git\bin` with `C:\Program Files\Git\usr\bin` (or equivalent if
 > git is installed to another location)
 > in the system environment variable `Path` and **restart your terminal** (or the node's terminal for **Jenkins**).
+
+---
 
 ## Deployment with Jenkins
 
@@ -98,6 +102,8 @@ After configuring Jenkins, it is possible to launch the `ContinuumDeploymentPipe
          ```
     - It is also possible to use the command `minikube tunnel` to expose the service outside the Kubernetes cluster without having to forward the port
 
+---
+
 ## Monitor the application with Prometheus and Grafana
 
 To monitor the application, **Prometheus** and **Grafana** are used.
@@ -140,6 +146,8 @@ sh ops/launch_monitoring.sh
 4. Dashboard is already imported with the installation script. If not, import the **dashboard** from the
    file [dashboard.json](https://github.com/AurelDP/Continuum/blob/main/ops/grafana/dashboard.json)
 5. Alerts are already imported with the installation script.
+
+---
 
 ## Additional information
 
