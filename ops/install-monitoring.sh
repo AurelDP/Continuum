@@ -1,16 +1,13 @@
 #!/bin/bash
 
-# Add the Prometheus Helm repository
+# Creating continuum-monitoring namespace
+kubectl create namespace continuum-monitoring
+
+# Add the Prometheus & Grafana Helm repositories
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-
-# Install Prometheus
-helm install prometheus prometheus-community/prometheus
-
-# Add the Grafana Helm repository
 helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
 
-# Install Grafana
-helm install grafana grafana/grafana
-
-# Upgrade Grafana install with value.yaml file
-helm upgrade grafana grafana/grafana -f grafana/values.yml
+# Install Prometheus & Grafana
+helm upgrade --install prometheus prometheus-community/prometheus --namespace=continuum-monitoring
+helm upgrade --install --values grafana/values.yml grafana grafana/grafana --namespace=continuum-monitoring
