@@ -76,7 +76,7 @@ Make sure Jenkins is **already configured** on your machine.
 
 1. Create a Jenkins node with Docker and Maven installed (**label this node** `slave`)
     - If the workspace of the node is on your local machine, **Docker** and **Maven** must be installed on it
-2. Make sure that the **Kubernetes**, **Kubernetes CLI**, **Docker**, **Docker Pipeline**, **Git** and **Prometheus** plugins are installed
+2. Make sure that the **Kubernetes**, **Kubernetes CLI**, **Docker**, **Docker Pipeline** and **Git** plugins are installed
 3. Configure a **Docker credential** (username and password) `dockerhub_id` to connect to Docker Hub
     - The connection information for **Docker Hub** can be found in the report associated with the project
 
